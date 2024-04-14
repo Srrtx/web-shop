@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Product</title>
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+    <script src="/public/js/bootstrap.bundle.min.js"></script>
+    <script src="/public/js/notiflix-aio-3.2.6.min.js"></script>
+</head>
+<body>
+    <!-- navbar -->
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="ms-3">
+            <a class="text-white me-2" href="/admin/productPage">Product</a>
+            <a class="text-secondary" href="/admin/orderPage">Order</a>
+        </div>
+        <div class="d-flex">
+            <span id="username" class="text-white me-3 mt-2">username</span>
+            <a href="/logout" class="btn btn-danger me-3">Logout</a>
+        </div>
+    </nav>
+    <!-- product table -->
+    <table class="table table-striped">
+        <thead>
+            <tr><th>ID</th> <th>Name</th> <th>Price</th> <th>Enable</th></tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+    </table>
+
+    <script src="/public/js/admin_product.js"></script>
+</body>
+</html>
