@@ -49,28 +49,30 @@ function showOrder(data) {
         temp += `<td>${order.ordering_id}</td>`;
         temp += `<td>${new Date(order.date).toLocaleDateString()}</td>`;
         temp += `<td>${order.username}</td>`;
-        if(order.status == 1) {
+        if(order.status === 1) {
             temp += `<td class="text-warning">Pending</td>`;
         }
         else {
             temp += `<td class="text-success">Complete</td>`;
         }
         // note that we can send only number or String with '' as function's parameters
-        temp += `<td><button class="btn btn-success" onclick=getDetail(${order.ordering_id})>View</button></td>`;
+        const order_detail = JSON.stringify(order);
+        temp += `<td><button class="btn btn-success" onclick='getDetail(${order_detail})'>View</button></td>`;
         temp += `</tr>`;
     });
     tbody.innerHTML = temp;
 }
 
 // get order detail from database
-async function getDetail(ordering_id) {
+async function getDetail(order) {
+    // const order_detail = JSON.parse(order);
     Notiflix.Block.standard('.block');
     try {
-        const response = await fetch(`/user/order/${ordering_id}`);
+        const response = await fetch(`/user/order/${order.ordering_id}`);
         if (response.ok) {
             Notiflix.Block.remove('.block', 200);
             const data = await response.json();
-            showDetail(data, ordering_id);
+            showDetail(data, order);
         }
         else if (response.status == 500) {
             const data = await response.text();
@@ -86,7 +88,7 @@ async function getDetail(ordering_id) {
 }
 
 // show order details
-function showDetail(data, ordering_id) {
+function showDetail(data, order) {
     const tableDetail = document.querySelector('#tableDetail');
     let temp = '<thead><tr><th>Product ID</th> <th>Name</th> <th>Price</th></tr></thead>';
     temp += '<tbody>';
@@ -97,7 +99,12 @@ function showDetail(data, ordering_id) {
         temp += `<td>${product.price}</td>`;
         temp += `</tr>`;
     });
-    temp += `<tr><td><button class="btn btn-primary" onclick=confirm(${ordering_id})>Confirm</button></td></tr>`;
+    // total price
+    temp += `<tr class="table-warning"><td></td> <td class="text-end">Total price</td> <td>${order.price}</td></tr>`;
+    // if status is pending, show confirm button
+    if(order.status === 1) {
+        temp += `<tr><td><button class="btn btn-primary" onclick="confirm(${order.ordering_id})">Confirm</button></td></tr>`;
+    }
     temp += '</tbody>';
     tableDetail.innerHTML = temp;
 }
@@ -114,6 +121,7 @@ function confirm(ordering_id) {
                         function cb() {
                             // reload page
                             getOrder();
+                            // TODO: refresh or disable table product detail
                         }
                     );
                 }

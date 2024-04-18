@@ -61,13 +61,14 @@ app.get('/user/order', function (req, res) {
 });
 
 // ------------- Customer checks out products --------------
-app.post('/user/checkout', function (req, res) {
+app.post('/user/checkout/:totalPrice', function (req, res) {
+    const totalPrice = req.params.totalPrice;
     const cart = req.body;
     // console.log(cart[0].name);
     // res.send('test');
     // const sql = "INSERT INTO booking(`user_id`, `room_id`, `date`, `timeslot`, `status`) VALUES (?, ?, CURRENT_DATE, ?, 0)";
-    let sql = "INSERT INTO ordering(date, user_id, status) VALUES(CURRENT_DATE, ?, 1)";
-    con.query(sql, [req.session.userID], function (err, results) {
+    let sql = "INSERT INTO ordering(date, user_id, price, status) VALUES(CURRENT_DATE, ?, ?, 1)";
+    con.query(sql, [req.session.userID, totalPrice], function (err, results) {
         if (err) {
             console.error(err);
             return res.status(500).send("Database server error");
@@ -133,7 +134,7 @@ app.put('/admin/order/:orderID', function (req, res) {
 
 // ------------- get all orders and order details --------------
 app.get('/admin/order', function (req, res) {
-    const sql = "SELECT user.username, ordering.ordering_id, ordering.date, ordering.status FROM user INNER JOIN ordering ON user.user_id=ordering.user_id";
+    const sql = "SELECT user.username, ordering.ordering_id, ordering.date, ordering.price, ordering.status FROM user INNER JOIN ordering ON user.user_id=ordering.user_id";
     con.query(sql, function (err, results) {
         if (err) {
             console.error(err);

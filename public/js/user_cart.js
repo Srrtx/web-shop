@@ -1,3 +1,5 @@
+// total product price
+let totalPrice = 0;
 // get user
 async function getUser() {
     try {
@@ -28,13 +30,19 @@ function showProduct() {
     }
     const tbody = document.querySelector('#tbody');
     let temp = '';
+    totalPrice = 0;
     data.forEach(function(product) {
         temp += `<tr>`;
         temp += `<td>${product.product_id}</td>`;
         temp += `<td>${product.name}</td>`;
         temp += `<td>${product.price}</td>`;
         temp += `</tr>`;
+        totalPrice += product.price;
     });
+    // total price
+    if(data.length !== 0) {
+        temp += `<tr class="table-warning"><td></td> <td class="text-end">Total price</td> <td>${totalPrice}</td></tr>`;
+    }
     tbody.innerHTML = temp;
 }
 
@@ -63,7 +71,7 @@ document.querySelector('#btnCheckout').onclick = async function() {
                 headers: { "Content-Type": "application/json" },
                 body: data,
             };
-            const response = await fetch('/user/checkout', options);
+            const response = await fetch('/user/checkout/' + totalPrice, options);
             if (response.ok) {
                 const data = await response.text();
                 Notiflix.Report.success('Success', data, 'OK', 
