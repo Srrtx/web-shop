@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 18, 2024 at 06:00 AM
+-- Generation Time: Apr 21, 2024 at 11:00 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.11
 
@@ -42,7 +42,8 @@ CREATE TABLE `ordering` (
 --
 
 INSERT INTO `ordering` (`ordering_id`, `date`, `user_id`, `price`, `status`) VALUES
-(22, '2024-04-18', 2, 498, 2);
+(22, '2024-04-18', 2, 498, 2),
+(23, '2024-04-21', 3, 598, 1);
 
 -- --------------------------------------------------------
 
@@ -62,7 +63,9 @@ CREATE TABLE `ordering_detail` (
 
 INSERT INTO `ordering_detail` (`detail_id`, `ordering_id`, `product_id`) VALUES
 (10, 22, 1),
-(11, 22, 2);
+(11, 22, 2),
+(12, 23, 1),
+(13, 23, 3);
 
 -- --------------------------------------------------------
 
@@ -73,6 +76,7 @@ INSERT INTO `ordering_detail` (`detail_id`, `ordering_id`, `product_id`) VALUES
 CREATE TABLE `product` (
   `product_id` smallint(5) UNSIGNED NOT NULL,
   `name` varchar(20) NOT NULL,
+  `img` varchar(20) NOT NULL,
   `price` mediumint(9) NOT NULL,
   `status` tinyint(3) UNSIGNED NOT NULL COMMENT '0=disable,1=enable'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -81,10 +85,10 @@ CREATE TABLE `product` (
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`product_id`, `name`, `price`, `status`) VALUES
-(1, 'hat', 199, 1),
-(2, 'shirt', 299, 1),
-(3, 'shoe', 399, 1);
+INSERT INTO `product` (`product_id`, `name`, `img`, `price`, `status`) VALUES
+(1, 'hat', 'hat.png', 199, 1),
+(2, 'shirt', 'shirt.png', 299, 1),
+(3, 'shoe', 'shoe.png', 399, 1);
 
 -- --------------------------------------------------------
 
@@ -147,13 +151,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `ordering`
 --
 ALTER TABLE `ordering`
-  MODIFY `ordering_id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `ordering_id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `ordering_detail`
 --
 ALTER TABLE `ordering_detail`
-  MODIFY `detail_id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `detail_id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `product`

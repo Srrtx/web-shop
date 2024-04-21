@@ -54,22 +54,23 @@ function showOrder(data) {
         else {
             temp += `<td class="text-success">Complete</td>`;
         }
-        // note that we can send only number or String with '' as function's parameters
-        temp += `<td><button class="btn btn-success" onclick=getDetail(${order.ordering_id})>View</button></td>`;
+        // to attach JSOn with onclick event, we use '' instead of "" because JSON uses ""
+        const order_detail = JSON.stringify(order);
+        temp += `<td><button class="btn btn-success" onclick='getDetail(${order_detail})'>View</button></td>`;
         temp += `</tr>`;
     });
     tbody.innerHTML = temp;
 }
 
 // get order detail from database
-async function getDetail(ordering_id) {
+async function getDetail(order) {
     Notiflix.Block.standard('.block');
     try {
-        const response = await fetch(`/user/order/${ordering_id}`);
+        const response = await fetch(`/user/order/${order.ordering_id}`);
         if (response.ok) {
             Notiflix.Block.remove('.block', 200);
             const data = await response.json();
-            showDetail(data);
+            showDetail(data, order);
         }
         else if (response.status == 500) {
             const data = await response.text();
@@ -85,17 +86,20 @@ async function getDetail(ordering_id) {
 }
 
 // show order details
-function showDetail(data) {
+function showDetail(data, order) {
     const tableDetail = document.querySelector('#tableDetail');
-    let temp = '<thead><tr><th>Product ID</th> <th>Name</th> <th>Price</th></tr></thead>';
+    let temp = '<thead><tr><th>Product ID</th> <th>Image</th> <th>Name</th> <th>Price</th></tr></thead>';
     temp += '<tbody>';
     data.forEach(function(product) {
         temp += `<tr>`;
         temp += `<td>${product.product_id}</td>`;
+        temp += `<td><img src="/public/img/${product.img}" width="64px"></td>`;
         temp += `<td>${product.name}</td>`;
         temp += `<td>${product.price}</td>`;
         temp += `</tr>`;
     });
+    // total price
+    temp += `<tr class="table-warning"><td></td> <td></td> <td class="text-end">Total price</td> <td>${order.price}</td></tr>`;
     temp += '</tbody>';
     tableDetail.innerHTML = temp;
 }

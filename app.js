@@ -38,7 +38,7 @@ app.get("/password/:pass", function (req, res) {
 // =================== User routes =======================
 // ------------- get orders and order details --------------
 app.get('/user/order/:orderID', function (req, res) {
-    const sql = "SELECT product.product_id, product.name, product.price FROM product INNER JOIN ordering_detail ON product.product_id=ordering_detail.product_id WHERE ordering_id=?";
+    const sql = "SELECT product.product_id, product.name, product.img, product.price FROM product INNER JOIN ordering_detail ON product.product_id=ordering_detail.product_id WHERE ordering_id=?";
     con.query(sql, [req.params.orderID], function (err, results) {
         if (err) {
             console.error(err);

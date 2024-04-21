@@ -47,6 +47,7 @@ function showProduct(data) {
     data.forEach(function(product) {
         temp += `<tr>`;
         temp += `<td>${product.product_id}</td>`;
+        temp += `<td><img src="/public/img/${product.img}" width="64px"></td>`;
         temp += `<td>${product.name}</td>`;
         temp += `<td>${product.price}</td>`;
         temp += `<td><div class="form-check form-switch"><input class="form-check-input" type="checkbox" onchange="confirm(event, ${product.product_id})"`;

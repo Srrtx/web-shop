@@ -55,8 +55,8 @@ function showOrder(data) {
         else {
             temp += `<td class="text-success">Complete</td>`;
         }
-        // note that we can send only number or String with '' as function's parameters
         const order_detail = JSON.stringify(order);
+        // to attach JSOn with onclick event, we use '' instead of "" because JSON uses ""
         temp += `<td><button class="btn btn-success" onclick='getDetail(${order_detail})'>View</button></td>`;
         temp += `</tr>`;
     });
@@ -65,7 +65,7 @@ function showOrder(data) {
 
 // get order detail from database
 async function getDetail(order) {
-    // const order_detail = JSON.parse(order);
+    // order is JSON but after passing, we can use it as JS object
     Notiflix.Block.standard('.block');
     try {
         const response = await fetch(`/user/order/${order.ordering_id}`);
@@ -90,20 +90,21 @@ async function getDetail(order) {
 // show order details
 function showDetail(data, order) {
     const tableDetail = document.querySelector('#tableDetail');
-    let temp = '<thead><tr><th>Product ID</th> <th>Name</th> <th>Price</th></tr></thead>';
+    let temp = '<thead><tr><th>Product ID</th> <th>Image</th> <th>Name</th> <th>Price</th></tr></thead>';
     temp += '<tbody>';
     data.forEach(function(product) {
         temp += `<tr>`;
         temp += `<td>${product.product_id}</td>`;
+        temp += `<td><img src="/public/img/${product.img}" width="64px"></td>`;
         temp += `<td>${product.name}</td>`;
         temp += `<td>${product.price}</td>`;
         temp += `</tr>`;
     });
     // total price
-    temp += `<tr class="table-warning"><td></td> <td class="text-end">Total price</td> <td>${order.price}</td></tr>`;
+    temp += `<tr class="table-warning"><td></td> <td></td> <td class="text-end">Total price</td> <td>${order.price}</td></tr>`;
     // if status is pending, show confirm button
     if(order.status === 1) {
-        temp += `<tr><td><button class="btn btn-primary" onclick="confirm(${order.ordering_id})">Confirm</button></td></tr>`;
+        temp += `<tr><td></td> <td></td> <td></td> <td><button class="btn btn-primary" onclick="confirm(${order.ordering_id})">Confirm</button></td></tr>`;
     }
     temp += '</tbody>';
     tableDetail.innerHTML = temp;

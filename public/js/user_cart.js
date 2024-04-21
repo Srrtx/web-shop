@@ -34,6 +34,7 @@ function showProduct() {
     data.forEach(function(product) {
         temp += `<tr>`;
         temp += `<td>${product.product_id}</td>`;
+        temp += `<td><img src="/public/img/${product.img}" width="64px"></td>`;
         temp += `<td>${product.name}</td>`;
         temp += `<td>${product.price}</td>`;
         temp += `</tr>`;
@@ -41,7 +42,7 @@ function showProduct() {
     });
     // total price
     if(data.length !== 0) {
-        temp += `<tr class="table-warning"><td></td> <td class="text-end">Total price</td> <td>${totalPrice}</td></tr>`;
+        temp += `<tr class="table-warning"><td></td> <td></td> <td class="text-end">Total price</td> <td>${totalPrice}</td></tr>`;
     }
     tbody.innerHTML = temp;
 }
